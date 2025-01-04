@@ -1,0 +1,44 @@
+package net.anawesomguy.breakingbedrock;
+
+import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
+import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+
+import java.util.List;
+import java.util.Set;
+
+public final class BreakingBedrockMixinPlugin implements IMixinConfigPlugin {
+    @Override
+    public void onLoad(String mixinPackage) {
+    }
+
+    @Override
+    public String getRefMapperConfig() {
+        return null;
+    }
+
+    @Override
+    public boolean shouldApplyMixin(String targetName, String mixinName) {
+//        if ("net.anawesomguy.breakingbedrock.mixin.BlocksMixin_LootTable".equals(mixinName))
+//            return BreakingBedrock.DROP_BEDROCK;
+//        return true;
+        return !"net.anawesomguy.breakingbedrock.mixin.BlocksMixin_LootTable".equals(mixinName) || BreakingBedrock.DROP_BEDROCK;
+    }
+
+    @Override
+    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+    }
+
+    @Override
+    public List<String> getMixins() {
+        return null;
+    }
+
+    @Override
+    public void preApply(String targetName, ClassNode targetClass, String mixinName, IMixinInfo mixinInfo) {
+    }
+
+    @Override
+    public void postApply(String targetName, ClassNode targetClass, String mixinName, IMixinInfo mixinInfo) {
+    }
+}

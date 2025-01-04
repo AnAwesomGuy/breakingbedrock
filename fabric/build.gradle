@@ -45,19 +45,20 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
+    modImplementation fabricApi.module("fabric-resource-loader-v0", fabric_api_version)
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric"))
 
     modLocalRuntime "maven.modrinth:modernfix:$modernfix_version"
-    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version"
-    modLocalRuntime "maven.modrinth:sodium:$sodium_version-fabric"
+    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-fabric"
+//    modLocalRuntime "maven.modrinth:sodium:$sodium_version-fabric"
+//    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
 }
 
 //fabricApi.configureDataGeneration()
 //sourceSets.main.resources.exclude 'src/main/generated/.cache/*'
-//
+
 //import groovy.json.JsonOutput
 //import groovy.json.JsonSlurper
 //import net.fabricmc.loom.task.RemapJarTask
