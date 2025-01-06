@@ -90,7 +90,7 @@ allprojects {
         println it.name
         options.encoding = "UTF-8"
         options.release = 21
-//        options.compilerArgs << '-g:none'
+        options.compilerArgs << '-g:none'
     }
 
     java.withSourcesJar()
@@ -120,7 +120,7 @@ publishMods {
         file = neoForgeJar
         additionalFiles.from neoForgeSources
         version = project.version + "-neoforge"
-        displayName = "[(Neo)Forge 1.20.5+] $display_name $mod_version+1.20.4"
+        displayName = "[(Neo)Forge 1.20.5+] $display_name $project.version"
         modLoaders.add "neoforge"
     }
 
