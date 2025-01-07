@@ -1,6 +1,6 @@
 {
   "pack": {
-    "description": "BreakingBedrock",
+    "description": "${mod_id}",
     "pack_format": 7
   }
 }

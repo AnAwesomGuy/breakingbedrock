@@ -4,9 +4,11 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "mixins": [
-    "BlocksMixin",
-    "DiggerItemAccessor"
+    "DiggerItemAccessor",
+    "BlocksMixin_LootTable",
+    "BlocksMixin_ReplaceBedrock"
   ],
+  "plugin": "net.anawesomguy.breakingbedrock.BreakingBedrockMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }
