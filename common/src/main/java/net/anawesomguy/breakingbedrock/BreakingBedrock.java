@@ -23,7 +23,8 @@ public final class BreakingBedrock {
     public static final boolean DROP_BEDROCK;
 
     static {
-        LOGGER.info("Initializing Breaking Bedrock. This mod overwrites bedrock, and may break with other mods that do the same!");
+        Logger log = LOGGER;
+        log.info("Initializing Breaking Bedrock. This mod overwrites bedrock, and may break with other mods that do the same!");
         Properties properties = new Properties();
         float destroyTime, explosionResist;
         boolean dropBedrock;
@@ -34,31 +35,33 @@ public final class BreakingBedrock {
             String time = temp.getProperty("destroy_time"),
                    resist = temp.getProperty("explosion_resist"),
                    drop = temp.getProperty("drop_bedrock");
-            if (time == null || !((destroyTime = Float.parseFloat(time)) > -1) || destroyTime == Float.POSITIVE_INFINITY) {
+
+            if (time != null && ((destroyTime = Float.parseFloat(time)) >= 0 || destroyTime == -1F))
+                properties.setProperty("destroy_time", time);
+            else {
                 properties.setProperty("destroy_time", "100");
                 destroyTime = 100F;
-                LOGGER.debug("Correcting invalid config value {}!", time);
-            } else
-                properties.setProperty("destroy_time", time);
+                log.debug("Correcting invalid config value {}!", time);
+            }
 
-            if (resist == null || !((explosionResist = Float.parseFloat(resist)) > 0) ||
-                explosionResist == Float.POSITIVE_INFINITY) {
+            if (resist != null && (explosionResist = Float.parseFloat(resist)) >= 0)
+                properties.setProperty("explosion_resist", resist);
+            else {
                 properties.setProperty("explosion_resist", "3600000");
                 explosionResist = 3600000F;
-                LOGGER.debug("Correcting invalid config value {}!", resist);
-            } else
-                properties.setProperty("explosion_resist", resist);
+                log.debug("Correcting invalid config value {}!", resist);
+            }
 
             boolean isFalse = "false".equalsIgnoreCase(drop);
             boolean isTrue = "true".equalsIgnoreCase(drop);
             if (drop == null || (!isFalse && !isTrue)) { // if value is not set or is neither false nor true
                 properties.setProperty("drop_bedrock", "false");
                 dropBedrock = false;
-                LOGGER.debug("Correcting invalid config value {}!", drop);
+                log.debug("Correcting invalid config value {}!", drop);
             } else
                 properties.setProperty("drop_bedrock", String.valueOf(dropBedrock = isTrue));
         } catch (IOException | IllegalArgumentException e) {
-            LOGGER.info("Couldn't read config file (likely corrupted or missing)! Attempting to (re)create it.");
+            log.info("Couldn't read config file (likely corrupted or missing)! Attempting to (re)create it.");
             properties.setProperty("destroy_time", "100");
             properties.setProperty("explosion_resist", "3600000");
             properties.setProperty("drop_bedrock", "false");
@@ -79,10 +82,10 @@ public final class BreakingBedrock {
                                   drop_bedrock: Whether bedrock should drop as a block when broken.
                                  """);
         } catch (IOException e) {
-            LOGGER.error("Unable to create/modify config file!", e);
+            log.error("Unable to create/modify config file!", e);
         }
 
-        LOGGER.debug("Config initialized with values: destroy_time={}, explosion_resist={}, drop_bedrock={}",
+        log.debug("Config initialized with values: destroy_time={}, explosion_resist={}, drop_bedrock={}",
                      destroyTime, explosionResist, dropBedrock);
     }
 

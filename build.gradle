@@ -87,10 +87,9 @@ allprojects {
     }
 
     tasks.withType(JavaCompile).configureEach {
-        println it.name
         options.encoding = "UTF-8"
         options.release = 21
-        options.compilerArgs << '-g:none'
+//        options.compilerArgs << '-g:none'
     }
 
     java.withSourcesJar()
