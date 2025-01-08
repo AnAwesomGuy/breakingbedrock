@@ -93,7 +93,7 @@ publishMods {
         file = fabricJar
         additionalFiles.from fabricSources
         version = project.version + "-fabric"
-        displayName = "[Fabric 1.16-1.20.4] $display_name $version"
+        displayName = "[Fabric 1.16-1.20.4] $display_name ${version.get()}"
         modLoaders.addAll "fabric", "quilt"
     }
 
@@ -101,14 +101,14 @@ publishMods {
         file = forgeJar
         additionalFiles.from forgeSources
         version = project.version + "-forge"
-        displayName = "[Forge 1.17-1.20.4] $display_name $version"
+        displayName = "[Forge 1.17-1.20.4] $display_name ${version.get()}"
         modLoaders.add "forge"
     }
 
     def neo = publishOptions {
         file = neoJar
         version = project.mod_version + "+1.20.4-neoforge"
-        displayName = "[NeoForge 1.20.2-.4] $display_name $version"
+        displayName = "[NeoForge 1.20.2-.4] $display_name ${version.get()}"
         modLoaders.add "neoforge"
     }
 
