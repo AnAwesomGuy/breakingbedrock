@@ -111,7 +111,7 @@ publishMods {
         file = fabricJar
         additionalFiles.from fabricSources
         version = project.version + "-fabric"
-        displayName = "[Fabric 1.20.5+] $display_name $project.version"
+        displayName = "[Fabric 1.20.5-1.21.1] $display_name $project.version"
         modLoaders.addAll "fabric", "quilt"
     }
 
@@ -119,7 +119,7 @@ publishMods {
         file = neoForgeJar
         additionalFiles.from neoForgeSources
         version = project.version + "-neoforge"
-        displayName = "[(Neo)Forge 1.20.5+] $display_name $project.version"
+        displayName = "[(Neo)Forge 1.20.5-1.21.1] $display_name $project.version"
         modLoaders.add "neoforge"
     }
 
@@ -141,7 +141,7 @@ publishMods {
         from curseOptions, fabric
         minecraftVersionRange {
             start = "1.20.5"
-            end = "latest"
+            end = "1.21.1"
         }
     }
 
@@ -149,7 +149,7 @@ publishMods {
         from curseOptions, neoForge
         minecraftVersionRange {
             start = "1.20.5"
-            end = "latest"
+            end = "1.21.1"
         }
     }
 
@@ -157,7 +157,7 @@ publishMods {
         from modrinthOptions, fabric
         minecraftVersionRange {
             start = "24w12a"
-            end = "latest"
+            end = "24w34a"
             includeSnapshots = true
         }
     }
@@ -166,7 +166,7 @@ publishMods {
         from modrinthOptions, neoForge
         minecraftVersionRange {
             start = "1.20.5"
-            end = "latest"
+            end = "1.21.1"
         }
     }
 
@@ -175,7 +175,7 @@ publishMods {
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
-        commitish = "20.5+"
+        commitish = "20.5-21.2"
         tagName = project.version
     }
 }
