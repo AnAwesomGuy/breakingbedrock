@@ -175,7 +175,7 @@ publishMods {
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
-        commitish = "20.5-21.2"
+        commitish = "20.5-21.1"
         tagName = project.version
     }
 }
