@@ -57,7 +57,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge"))
 
-    modLocalRuntime "maven.modrinth:modernfix:rOLLd6NG"
+    modLocalRuntime "maven.modrinth:modernfix:vOIDbZlt"
     modLocalRuntime "maven.modrinth:ferrite-core:7.1.0-neoforge"
 //    modLocalRuntime "maven.modrinth:sodium:$sodium_version-neoforge"
 }
