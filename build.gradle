@@ -140,24 +140,24 @@ publishMods {
     curseforge("curseFabric") {
         from curseOptions, fabric
         minecraftVersionRange {
-            start = "1.20.5"
-            end = "1.21.1"
+            start = "1.21.2"
+            end = "latest"
         }
     }
 
     curseforge("curseNeoForge") {
         from curseOptions, neoForge
         minecraftVersionRange {
-            start = "1.20.5"
-            end = "1.21.1"
+            start = "1.21.2"
+            end = "latest"
         }
     }
 
     modrinth("modrinthFabric") {
         from modrinthOptions, fabric
         minecraftVersionRange {
-            start = "24w12a"
-            end = "24w34a"
+            start = "24w35a"
+            end = "latest"
             includeSnapshots = true
         }
     }
@@ -165,8 +165,8 @@ publishMods {
     modrinth("modrinthNeoForge") {
         from modrinthOptions, neoForge
         minecraftVersionRange {
-            start = "1.20.5"
-            end = "1.21.1"
+            start = "1.21.2"
+            end = "latest"
         }
     }
 
@@ -175,7 +175,7 @@ publishMods {
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
-        commitish = "20.5-21.1"
+        commitish = "21.2+"
         tagName = project.version
     }
 }
