@@ -16,10 +16,8 @@ public final class BreakingBedrockImpl {
     static {
         Function<Inventory, ItemStack> selected;
         try {
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
-            MethodType type = MethodType.methodType(ItemStack.class);
             //noinspection JavaLangInvokeHandleSignature
-            MethodHandle m = lookup.findVirtual(Inventory.class, "getSelected", type);
+            MethodHandle m = MethodHandles.lookup().findVirtual(Inventory.class, "getSelected", MethodType.methodType(ItemStack.class));
             selected = inv -> {
                 try {
                     return (ItemStack) m.invoke(inv);
