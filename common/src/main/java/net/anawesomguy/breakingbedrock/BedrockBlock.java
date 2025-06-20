@@ -13,7 +13,7 @@ public class BedrockBlock extends Block {
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return player.getInventory().getSelectedItem().isCorrectToolForDrops(state) ?
+        return BreakingBedrock.getSelected(player.getInventory()).isCorrectToolForDrops(state) ?
                player.getDestroySpeed(state) / state.getDestroySpeed(level, pos) / 30 :
                0F;
     }

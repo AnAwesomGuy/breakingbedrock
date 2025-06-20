@@ -8,25 +8,29 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.file.Path;
+import java.util.function.Function;
 
 public final class BreakingBedrockImpl {
-    private static final MethodHandle SELECTED;
+    private static final Function<Inventory, ItemStack> SELECTED;
 
     static {
-        MethodHandle m;
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
-        MethodType type = MethodType.methodType(ItemStack.class);
+        Function<Inventory, ItemStack> selected;
         try {
+            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodType type = MethodType.methodType(ItemStack.class);
             //noinspection JavaLangInvokeHandleSignature
-            m = lookup.findVirtual(Inventory.class, "getSelected", type); // <1.21.5
+            MethodHandle m = lookup.findVirtual(Inventory.class, "getSelected", type);
+            selected = inv -> {
+                try {
+                    return (ItemStack) m.invoke(inv);
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
+                }
+            };
         } catch (ReflectiveOperationException e) {
-            try {
-                m = lookup.findVirtual(Inventory.class, "getSelectedItem", type); // >=1.21.5ec
-            } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException(ex);
-            }
+            selected = Inventory::getSelectedItem;
         }
-        SELECTED = m;
+        SELECTED = selected;
     }
 
     public static Path configDir() {
@@ -38,10 +42,6 @@ public final class BreakingBedrockImpl {
     }
 
     public static ItemStack getSelected(Inventory inv) {
-        try {
-            return (ItemStack) SELECTED.invoke(inv);
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        return SELECTED.apply(inv);
     }
 }
