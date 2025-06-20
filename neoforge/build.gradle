@@ -7,28 +7,6 @@ architectury {
     neoForge()
 }
 
-loom {
-    runs {
-        clientDebug {
-            client()
-            ideConfigGenerated true
-            name = "Minecraft Client Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
-        }
-
-        serverDebug {
-            server()
-            ideConfigGenerated true
-            name = "Minecraft Server Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
-        }
-    }
-}
-
 configurations {
     common {
         canBeResolved = true
@@ -57,8 +35,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge"))
 
-    modLocalRuntime "maven.modrinth:modernfix:vOIDbZlt"
-    modLocalRuntime "maven.modrinth:ferrite-core:7.1.0-neoforge"
+    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-neoforge"
 //    modLocalRuntime "maven.modrinth:sodium:$sodium_version-neoforge"
 }
 

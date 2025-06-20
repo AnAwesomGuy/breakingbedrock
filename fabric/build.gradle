@@ -7,28 +7,6 @@ architectury {
     fabric()
 }
 
-loom {
-    runs {
-        clientDebug {
-            client()
-            ideConfigGenerated true
-            name = "Minecraft Client Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
-        }
-
-        serverDebug {
-            server()
-            ideConfigGenerated true
-            name = "Minecraft Server Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
-        }
-    }
-}
-
 configurations {
     common {
         canBeResolved = true
@@ -50,7 +28,6 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric"))
 
-    modLocalRuntime "maven.modrinth:modernfix:$modernfix_version"
     modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-fabric"
 //    modLocalRuntime "maven.modrinth:sodium:$sodium_version-fabric"
 //    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"

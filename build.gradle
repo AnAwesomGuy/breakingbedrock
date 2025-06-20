@@ -1,5 +1,5 @@
 plugins {
-    id "dev.architectury.loom" version "1.9-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.10-SNAPSHOT" apply false
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "com.github.johnrengelman.shadow" version "8.1.+" apply false
     id "me.modmuss50.mod-publish-plugin" version "0.8.+" apply false
@@ -29,7 +29,7 @@ subprojects {
         minecraft "com.mojang:minecraft:$minecraft_version"
         mappings loom.layered() {
             officialMojangMappings()
-            parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
+            parchment "org.parchmentmc.data:parchment-1.21.5:2025.06.15@zip"
         }
     }
 
@@ -51,6 +51,15 @@ subprojects {
 
     tasks.withType(AbstractRemapJarTask).configureEach {
         archiveAppendix = project.name
+    }
+
+    loom {
+        runs {
+            configureEach {
+                property 'mixin.debug', 'true'
+                property 'fabric.log.level', 'debug'
+            }
+        }
     }
 }
 
@@ -111,7 +120,7 @@ publishMods {
         file = fabricJar
         additionalFiles.from fabricSources
         version = project.version + "-fabric"
-        displayName = "[Fabric 1.20.5-1.21.1] $display_name $project.version"
+        displayName = "[Fabric 1.21.2+] $display_name $project.version"
         modLoaders.addAll "fabric", "quilt"
     }
 
@@ -119,7 +128,7 @@ publishMods {
         file = neoForgeJar
         additionalFiles.from neoForgeSources
         version = project.version + "-neoforge"
-        displayName = "[(Neo)Forge 1.20.5-1.21.1] $display_name $project.version"
+        displayName = "[(Neo)Forge 1.21.2+] $display_name $project.version"
         modLoaders.add "neoforge"
     }
 
