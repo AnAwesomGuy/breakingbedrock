@@ -180,7 +180,8 @@ publishMods {
     }
 
     github {
-        additionalFiles.from fabricJar, neoForgeJar, fabricSources, neoForgeSources
+        file = neoForgeJar
+        additionalFiles.from fabricJar, fabricSources, neoForgeSources
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
