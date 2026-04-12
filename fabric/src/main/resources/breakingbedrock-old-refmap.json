@@ -1,0 +1,24 @@
+{
+  "mappings": {
+    "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_LootTable": {
+      "<clinit>": "Lnet/minecraft/class_2246;<clinit>()V",
+      "net/minecraft/world/level/block/state/BlockBehaviour$Properties.noLootTable()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;": "Lnet/minecraft/class_4970$class_2251;method_16229()Lnet/minecraft/class_4970$class_2251;"
+    },
+    "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_ReplaceBedrock": {
+      "<clinit>": "Lnet/minecraft/class_2246;<clinit>()V",
+      "net/minecraft/world/level/block/Block": "net/minecraft/class_2248"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_LootTable": {
+        "<clinit>": "Lnet/minecraft/class_2246;<clinit>()V",
+        "net/minecraft/world/level/block/state/BlockBehaviour$Properties.noLootTable()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;": "Lnet/minecraft/class_4970$class_2251;method_16229()Lnet/minecraft/class_4970$class_2251;"
+      },
+      "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_ReplaceBedrock": {
+        "<clinit>": "Lnet/minecraft/class_2246;<clinit>()V",
+        "net/minecraft/world/level/block/Block": "net/minecraft/class_2248"
+      }
+    }
+  }
+}

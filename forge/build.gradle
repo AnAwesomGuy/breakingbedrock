@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -70,7 +70,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 build.dependsOn tasks.register("neoforgeJar", ShadowJar) {
     dependsOn jar
 
-    from(sourceSets.main.output) { exclude "META-INF/mods.toml" }
+    from(sourceSets.main.output) { exclude "META-INF/mods.toml", "*-refmap.json" }
     from(sourceSets.main.resources.matching(new PatternSet().include("META-INF/neoforge.mods.toml")).singleFile) {
         rename { "META-INF/mods.toml" }
         filter { it.empty ? null : it }
@@ -81,9 +81,11 @@ build.dependsOn tasks.register("neoforgeJar", ShadowJar) {
     }
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "neoforge"
-    archiveVersion = project.mod_version + "+1.20.4-neoforge"
-    relocate 'net.minecraftforge', 'net.neoforged'
+    archiveAppendix = "neoforge"
+    archiveVersion = project.mod_version + "+1.20.4"
+    relocate('net.minecraftforge', 'net.neoforged') {
+        skipStringConstants = true
+    }
 }
 
 remapJar {
@@ -95,10 +97,4 @@ sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
 }

@@ -1,5 +1,5 @@
 modLoader="lowcodefml"
-loaderVersion="[37,51)"
+loaderVersion="[40,51)"
 license="Apache-2.0"
 issueTrackerURL="${github_repo}/issues"
 logoFile="assets/${mod_id}/icon.png"

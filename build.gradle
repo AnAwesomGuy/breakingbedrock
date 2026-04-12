@@ -1,15 +1,15 @@
 plugins {
-    id "dev.architectury.loom" version "1.9-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.14-SNAPSHOT" apply false
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "com.github.johnrengelman.shadow" version "8.1.+" apply false
-    id "me.modmuss50.mod-publish-plugin" version "0.8.+"
+    id "com.gradleup.shadow" version "9.4.+" apply false
+    id "me.modmuss50.mod-publish-plugin" version "1.+"
 }
 
 architectury.minecraft = minecraft_version
 
 Map<String, String> modProperties() {
     [
-            version: mod_version, mod_id: mod_id, description: project.properties.description,
+            version    : mod_version, mod_id: mod_id, description: project.properties.description,
             github_repo: 'http://github.com/' + github, display_name: display_name,
             modrinth_id: modrinth_id, curseforge_id: curseforge_id,
     ]
@@ -50,6 +50,17 @@ subprojects {
     tasks.withType(AbstractRemapJarTask).configureEach {
         archiveAppendix = project.name
     }
+
+    loom.mixin.useLegacyMixinAp = true
+
+    tasks.withType(dev.architectury.plugin.TransformingTask).configureEach {
+        // strange hack to remove the refmap addition behavior from the mixin json
+        doFirst {
+            transformers.set(transformers.get().findAll {
+                !(it instanceof dev.architectury.plugin.transformers.AddRefmapName)
+            })
+        }
+    }
 }
 
 allprojects {
@@ -70,7 +81,8 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = 8
+        options.compilerArgs += "-Xlint:-options"
     }
 
     java.withSourcesJar()
@@ -101,7 +113,7 @@ publishMods {
         file = forgeJar
         additionalFiles.from forgeSources
         version = project.version + "-forge"
-        displayName = "[Forge 1.17-1.20.4] $display_name ${version.get()}"
+        displayName = "[Forge 1.18.2-1.20.4] $display_name ${version.get()}"
         modLoaders.add "forge"
     }
 
@@ -137,7 +149,7 @@ publishMods {
     curseforge("curseForge") {
         from curseOptions, forge
         minecraftVersionRange {
-            start = "1.17"
+            start = "1.18.2"
             end = "1.20.4"
         }
     }
@@ -162,7 +174,7 @@ publishMods {
     modrinth("modrinthForge") {
         from modrinthOptions, forge
         minecraftVersionRange {
-            start = "1.17"
+            start = "1.18.2"
             end = "1.20.4"
         }
     }

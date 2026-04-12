@@ -1,0 +1,24 @@
+{
+  "mappings": {
+    "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_LootTable": {
+      "<clinit>": "Lnet/minecraft/world/level/block/Blocks;<clinit>()V",
+      "net/minecraft/world/level/block/state/BlockBehaviour$Properties.noLootTable()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;": "Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;m_60993_()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;"
+    },
+    "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_ReplaceBedrock": {
+      "<clinit>": "Lnet/minecraft/world/level/block/Blocks;<clinit>()V",
+      "net/minecraft/world/level/block/Block": "net/minecraft/world/level/block/Block"
+    }
+  },
+  "data": {
+    "searge": {
+      "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_LootTable": {
+        "<clinit>": "Lnet/minecraft/world/level/block/Blocks;<clinit>()V",
+        "net/minecraft/world/level/block/state/BlockBehaviour$Properties.noLootTable()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;": "Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;m_60993_()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;",
+      },
+      "net/anawesomguy/breakingbedrock/mixin/BlocksMixin_ReplaceBedrock": {
+        "<clinit>": "Lnet/minecraft/world/level/block/Blocks;<clinit>()V",
+        "net/minecraft/world/level/block/Block": "net/minecraft/world/level/block/Block"
+      }
+    }
+  }
+}

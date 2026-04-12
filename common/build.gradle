@@ -1,11 +1,8 @@
-import dev.architectury.plugin.TransformingTask
-import dev.architectury.transformer.transformers.RemapInjectables
-
 architectury {
     common enabled_platforms.split(",")
 }
 
-//loom.mixin.useLegacyMixinAp = false // doesnt remap Block
+loom.mixin.defaultRefmapName = "$mod_id-new-refmap.json"
 
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
