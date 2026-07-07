@@ -1,8 +1,6 @@
 package net.anawesomguy.breakingbedrock;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,11 +91,6 @@ public final class BreakingBedrock {
 
     @ExpectPlatform
     public static Path configDir() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static ItemStack getSelected(Inventory inv) {
         throw new AssertionError();
     }
 }

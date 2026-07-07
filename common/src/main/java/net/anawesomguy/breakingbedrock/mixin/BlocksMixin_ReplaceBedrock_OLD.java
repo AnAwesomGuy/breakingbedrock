@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.function.Function;
 
 @Mixin(Blocks.class)
-public abstract class BlocksMixin_ReplaceBedrock {
+public abstract class BlocksMixin_ReplaceBedrock_OLD {
     @Shadow
     private static Block register(String string, Function<Properties, Block> function, Properties properties) {
         throw new AssertionError();

@@ -10,8 +10,4 @@ public final class BreakingBedrockImpl {
     public static Path configDir() {
         return FabricLoader.getInstance().getConfigDir();
     }
-
-    public static ItemStack getSelected(Inventory inv) {
-        return inv.getSelectedItem();
-    }
 }

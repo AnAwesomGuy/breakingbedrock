@@ -1,8 +1,8 @@
 plugins {
-    id "dev.architectury.loom" version "1.10-SNAPSHOT" apply false
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "com.github.johnrengelman.shadow" version "8.1.+" apply false
-    id "me.modmuss50.mod-publish-plugin" version "0.8.+" apply false
+    id "architectury-plugin" version "3.5-SNAPSHOT"
+    id "dev.architectury.loom-no-remap" version "1.17-SNAPSHOT" apply false
+    id "com.gradleup.shadow" version "9.5.+" apply false
+    id "me.modmuss50.mod-publish-plugin" version "2.+" apply false
 }
 
 apply plugin: "me.modmuss50.mod-publish-plugin"
@@ -19,18 +19,13 @@ Map<String, String> modProperties() {
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import net.fabricmc.loom.task.AbstractRemapJarTask
 
 subprojects {
-    apply plugin: "dev.architectury.loom"
+    apply plugin: "dev.architectury.loom-no-remap"
     apply plugin: "architectury-plugin"
 
     dependencies {
         minecraft "com.mojang:minecraft:$minecraft_version"
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment "org.parchmentmc.data:parchment-1.21.5:2025.06.15@zip"
-        }
     }
 
     processResources {
@@ -47,10 +42,6 @@ subprojects {
                 it.text = JsonOutput.toJson(new JsonSlurper().parse(it))
             }
         }
-    }
-
-    tasks.withType(AbstractRemapJarTask).configureEach {
-        archiveAppendix = project.name
     }
 
     loom {
@@ -97,11 +88,14 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.release = 21
+        options.release = 25
 //        options.compilerArgs << '-g:none'
     }
 
-    java.withSourcesJar()
+    java {
+        withSourcesJar()
+        toolchain.languageVersion = JavaLanguageVersion.of(25)
+    }
 
     [jar, sourcesJar]*.configure {
         from 'LICENSE'
@@ -111,24 +105,24 @@ allprojects {
 publishMods {
     changelog = project.changelog
     type = STABLE
-    def fabricJar = project.provider { project(":fabric").remapJar }.flatMap { it.archiveFile }
-    def fabricSources = project.provider { project(":fabric").remapSourcesJar }.flatMap { it.archiveFile }
-    def neoForgeJar = project.provider { project(":neoforge").remapJar }.flatMap { it.archiveFile }
-    def neoForgeSources = project.provider { project(":neoforge").remapSourcesJar }.flatMap { it.archiveFile }
+    def fabricJar = project.provider { project(":fabric").shadowJar }.flatMap { it.archiveFile }
+//    def fabricSources = project.provider { project(":fabric").sourcesJar }.flatMap { it.archiveFile }
+    def neoForgeJar = project.provider { project(":neoforge").shadowJar }.flatMap { it.archiveFile }
+//    def neoForgeSources = project.provider { project(":neoforge").remapSourcesJar }.flatMap { it.archiveFile }
 
     def fabric = publishOptions {
         file = fabricJar
-        additionalFiles.from fabricSources
+//        additionalFiles.from fabricSources
         version = project.version + "-fabric"
-        displayName = "[Fabric 1.21.2+] $display_name $project.version"
+        displayName = "[Fabric 26.x] $display_name $project.version"
         modLoaders.addAll "fabric", "quilt"
     }
 
     def neoForge = publishOptions {
         file = neoForgeJar
-        additionalFiles.from neoForgeSources
+//        additionalFiles.from neoForgeSources
         version = project.version + "-neoforge"
-        displayName = "[(Neo)Forge 1.21.2+] $display_name $project.version"
+        displayName = "[(Neo)Forge 26.x] $display_name $project.version"
         modLoaders.add "neoforge"
     }
 
@@ -149,7 +143,7 @@ publishMods {
     curseforge("curseFabric") {
         from curseOptions, fabric
         minecraftVersionRange {
-            start = "1.21.2"
+            start = "26.1"
             end = "latest"
         }
     }
@@ -157,7 +151,7 @@ publishMods {
     curseforge("curseNeoForge") {
         from curseOptions, neoForge
         minecraftVersionRange {
-            start = "1.21.2"
+            start = "26.1"
             end = "latest"
         }
     }
@@ -165,7 +159,7 @@ publishMods {
     modrinth("modrinthFabric") {
         from modrinthOptions, fabric
         minecraftVersionRange {
-            start = "24w35a"
+            start = "26.1-snapshot-1"
             end = "latest"
             includeSnapshots = true
         }
@@ -174,18 +168,19 @@ publishMods {
     modrinth("modrinthNeoForge") {
         from modrinthOptions, neoForge
         minecraftVersionRange {
-            start = "1.21.2"
+            start = "26.1"
             end = "latest"
         }
     }
 
     github {
         file = neoForgeJar
-        additionalFiles.from fabricJar, fabricSources, neoForgeSources
+        additionalFiles.from fabricJar
+//        additionalFiles.from fabricSources, neoForgeSources
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
-        commitish = "21.2+"
+        commitish = "26.x"
         tagName = project.version
     }
 }

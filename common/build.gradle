@@ -2,10 +2,22 @@ architectury {
     common enabled_platforms.split(",")
 }
 
-//loom.mixin.useLegacyMixinAp = false // doesnt remap Block
-
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+    compileOnly("io.github.llamalad7:mixinextras-common:0.5.3") // even forge include mixin extras after 1.21.10
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3")
+    compileOnly("org.spongepowered:mixin:0.8.7")
+    compileOnly("org.ow2.asm:asm-tree:9.10.1")
+}
+
+repositories {
+    exclusiveContent {
+        forRepositories maven {
+            url = 'https://repo.spongepowered.org/maven/'
+        }
+        filter {
+            includeGroup "org.spongepowered"
+        }
+    }
 }

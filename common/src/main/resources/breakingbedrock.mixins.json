@@ -3,10 +3,7 @@
   "package": "net.anawesomguy.breakingbedrock.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "mixins": [
-    "BlocksMixin_LootTable",
-    "BlocksMixin_ReplaceBedrock"
-  ],
+  "mixins": ["BlocksMixin_LootTable", "BlocksMixin_ReplaceBedrock_NEW_26_2", "BlocksMixin_ReplaceBedrock_OLD"],
   "plugin": "net.anawesomguy.breakingbedrock.BreakingBedrockMixinPlugin",
   "injectors": {
     "defaultRequire": 1

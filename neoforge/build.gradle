@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -32,10 +32,10 @@ dependencies {
     compileOnly("net.minecraftforge:fmlloader:$forgeVer") { transitive false }
 //    compileOnly("net.minecraftforge:forge:$forgeVer:universal") { transitive false }
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(":common")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge"))
 
-    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-neoforge"
+//    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-neoforge"
 //    modLocalRuntime "maven.modrinth:sodium:$sodium_version-neoforge"
 }
 
@@ -45,20 +45,9 @@ tasks.withType(Jar).configureEach {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-    destinationDirectory.set destinationDirectory.dir('../devlibs').get()
+    archiveAppendix = project.name
+    archiveClassifier = ""
     exclude "architectury_inject*/**"
-}
-
-remapJar {
-    inputFile.set shadowJar.archiveFile
-    dependsOn shadowJar
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
 }
 
 components.java {
