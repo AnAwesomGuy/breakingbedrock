@@ -1,9 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:never"
-    }
-  ],
   "values": [
     "bedrock"
   ]
