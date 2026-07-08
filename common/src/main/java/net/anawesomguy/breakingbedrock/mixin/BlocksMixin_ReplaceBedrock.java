@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Mixin(Blocks.class)
 public abstract class BlocksMixin_ReplaceBedrock {
     @Shadow
-    private static Block register(String string, Function<Properties, Block> function, Properties properties) {
+    private static Block register(String name, Function<Properties, Block> factory, Properties properties) {
         throw new AssertionError();
     }
 

@@ -15,4 +15,4 @@ displayURL="http://modrinth.com/mod/${modrinth_id}"
 [[dependencies.${mod_id}]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.21.2,)"
+versionRange="[1.21.2,1.21.11]"

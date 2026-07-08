@@ -14,10 +14,12 @@ public final class BreakingBedrockImpl {
     private static final Function<Inventory, ItemStack> SELECTED;
 
     static {
+        // the name for Inventory::getSelectedItem changed from Inventory::getSelected in mojmap some time between 1.21.4 and 1.21.5
         Function<Inventory, ItemStack> selected;
         try {
             //noinspection JavaLangInvokeHandleSignature
             MethodHandle m = MethodHandles.lookup().findVirtual(Inventory.class, "getSelected", MethodType.methodType(ItemStack.class));
+            // we are before 1.21.5
             selected = inv -> {
                 try {
                     return (ItemStack) m.invoke(inv);
@@ -26,6 +28,7 @@ public final class BreakingBedrockImpl {
                 }
             };
         } catch (ReflectiveOperationException e) {
+            // we are after 1.21.5 (including)
             selected = Inventory::getSelectedItem;
         }
         SELECTED = selected;

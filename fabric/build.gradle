@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -28,7 +28,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric"))
 
-    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-fabric"
+//    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-fabric"
 }
 
 //fabricApi.configureDataGeneration()

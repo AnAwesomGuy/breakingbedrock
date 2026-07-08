@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -35,7 +35,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge"))
 
-    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-neoforge"
+//    modLocalRuntime "maven.modrinth:ferrite-core:$ferrite_core_version-neoforge"
 //    modLocalRuntime "maven.modrinth:sodium:$sodium_version-neoforge"
 }
 
