@@ -22,14 +22,14 @@ public final class BreakingBedrockMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetName, String mixinName) {
         return switch(mixinName) {
             case "net.anawesomguy.breakingbedrock.mixin.BlocksMixin_LootTable" -> {
-                BreakingBedrock.LOGGER.info("Loading mixin for giving bedrock a loot table");
+                BreakingBedrock.LOGGER.debug("Loading mixin for giving bedrock a loot table");
                 yield BreakingBedrock.DROP_BEDROCK;
             }
             case "net.anawesomguy.breakingbedrock.mixin.BlocksMixin_ReplaceBedrock_NEW_26_2" -> {
                 try {
                     @SuppressWarnings("unused")
                     Class<?> c = BlockItemId.class;
-                    BreakingBedrock.LOGGER.info("Loading mixin for 26.2-snapshot-3 and above");
+                    BreakingBedrock.LOGGER.debug("Loading mixin for 26.2-snapshot-3 and above");
                     yield true; // BlockItemId exists, use new mixin
                 } catch (NoClassDefFoundError e) {
                     yield false; // BlockItemId doesn't exist, don't use new mixin
@@ -41,7 +41,7 @@ public final class BreakingBedrockMixinPlugin implements IMixinConfigPlugin {
                     Class<?> c = BlockItemId.class;
                     yield false; // BlockItemId exists, don't use old mixin
                 } catch (NoClassDefFoundError e) {
-                    BreakingBedrock.LOGGER.info("Loading mixin for older 26.1.x versions");
+                    BreakingBedrock.LOGGER.debug("Loading mixin for older 26.1.x versions");
                     yield true; // BlockItemId doesn't exist, use old mixin
                 }
             }
