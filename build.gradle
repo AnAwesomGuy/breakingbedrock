@@ -1,7 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.5-SNAPSHOT"
     id "dev.architectury.loom-no-remap" version "1.17-SNAPSHOT" apply false
-    id "com.gradleup.shadow" version "9.5.+" apply false
+    id "com.gradleup.shadow" version "9.5.+"
     id "me.modmuss50.mod-publish-plugin" version "2.+" apply false
 }
 
@@ -11,11 +11,12 @@ architectury.minecraft = minecraft_version
 
 Map<String, String> modProperties() {
     [
-            version: mod_version, mod_id: mod_id, description: project.properties.description,
+            version    : mod_version, mod_id: mod_id, description: project.properties.description,
             github_repo: 'http://github.com/' + github, display_name: display_name,
             modrinth_id: modrinth_id, curseforge_id: curseforge_id,
     ]
 }
+
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -51,6 +52,11 @@ subprojects {
                 property 'fabric.log.level', 'debug'
             }
         }
+    }
+
+    jar {
+        archiveAppendix = project.name
+        archiveClassifier = 'dev'
     }
 }
 
@@ -93,71 +99,77 @@ allprojects {
     }
 
     java {
-        withSourcesJar()
+//        withSourcesJar()
         toolchain.languageVersion = JavaLanguageVersion.of(25)
     }
 
-    [jar, sourcesJar]*.configure {
+    [jar/*, sourcesJar*/]*.configure {
         from 'LICENSE'
     }
+
+    // repoducible builds
+    tasks.withType(AbstractArchiveTask).configureEach {
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+
+        filePermissions { unix('644') }
+        dirPermissions { unix('755') }
+    }
 }
+
+dependencies {
+    shadow(project(':common')) { transitive = false }
+}
+
+jar {
+    archiveClassifier = 'EMPTY'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+
+    archiveAppendix = 'universal'
+    archiveClassifier = ''
+
+    from project.project(":fabric").sourceSets.main.output.resourcesDir
+    from project.project(":neoforge").sourceSets.main.output.resourcesDir
+
+    manifest.attributes.put 'MixinConfigs', mod_id + '.mixins.json'
+}.dependsOn(project.project(":fabric").processResources, project.project(":neoforge").processResources)
 
 publishMods {
     changelog = project.changelog
     type = STABLE
-    def fabricJar = project.provider { project(":fabric").shadowJar }.flatMap { it.archiveFile }
-//    def fabricSources = project.provider { project(":fabric").sourcesJar }.flatMap { it.archiveFile }
-    def neoForgeJar = project.provider { project(":neoforge").shadowJar }.flatMap { it.archiveFile }
-//    def neoForgeSources = project.provider { project(":neoforge").remapSourcesJar }.flatMap { it.archiveFile }
 
-    def fabric = publishOptions {
-        file = fabricJar
-//        additionalFiles.from fabricSources
-        version = project.version + "-fabric"
-        displayName = "[Fabric 26.x] $display_name $project.version"
-        modLoaders.addAll "fabric", "quilt"
-    }
+//    def fabricJar = project.provider { project(":fabric").shadowJar }.flatMap { it.archiveFile }
+//    def neoForgeJar = project.provider { project(":neoforge").shadowJar }.flatMap { it.archiveFile }
+    def universalJar = project.provider { rootProject.shadowJar }.flatMap { it.archiveFile }
 
-    def neoForge = publishOptions {
-        file = neoForgeJar
-//        additionalFiles.from neoForgeSources
-        version = project.version + "-neoforge"
-        displayName = "[(Neo)Forge 26.x] $display_name $project.version"
-        modLoaders.add "neoforge"
-    }
+    file = universalJar
+//        additionalFiles.from fabricJar, neoforgeJar
+    version = project.version
+    displayName = "[All Loaders 26.x] $display_name $project.version"
+    modLoaders.addAll "fabric", "neoforge", "forge"
 
-    def modrinthOptions = modrinthOptions {
-        accessToken = providers.environmentVariable('MODRINTH_TOKEN')
-        dryRun = !accessToken.present
-        projectId = modrinth_id
-    }
-
-    def curseOptions = curseforgeOptions {
+    curseforge {
         accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
         dryRun = !accessToken.present
         projectId = curseforge_id
         clientRequired = true
         serverRequired = true
-    }
 
-    curseforge("curseFabric") {
-        from curseOptions, fabric
         minecraftVersionRange {
             start = "26.1"
             end = "latest"
         }
     }
 
-    curseforge("curseNeoForge") {
-        from curseOptions, neoForge
-        minecraftVersionRange {
-            start = "26.1"
-            end = "latest"
-        }
-    }
+    modrinth {
+        accessToken = providers.environmentVariable('MODRINTH_TOKEN')
+        dryRun = !accessToken.present
+        projectId = modrinth_id
+        environment = CLIENT_AND_SERVER
 
-    modrinth("modrinthFabric") {
-        from modrinthOptions, fabric
         minecraftVersionRange {
             start = "26.1-snapshot-1"
             end = "latest"
@@ -165,18 +177,7 @@ publishMods {
         }
     }
 
-    modrinth("modrinthNeoForge") {
-        from modrinthOptions, neoForge
-        minecraftVersionRange {
-            start = "26.1"
-            end = "latest"
-        }
-    }
-
     github {
-        file = neoForgeJar
-        additionalFiles.from fabricJar
-//        additionalFiles.from fabricSources, neoForgeSources
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github

@@ -38,3 +38,5 @@ jobs:
             !fabric/build/libs/*-dev*.jar
             forge/build/libs/*.jar
             !forge/build/libs/*-dev*.jar
+            build/libs/*.jar
+            !build/libs/*-EMPTY*.jar

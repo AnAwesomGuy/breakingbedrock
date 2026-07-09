@@ -86,11 +86,40 @@ public final class BreakingBedrock {
         }
 
         log.debug("Config initialized with values: destroy_time={}, explosion_resist={}, drop_bedrock={}",
-                     destroyTime, explosionResist, dropBedrock);
+                  destroyTime, explosionResist, dropBedrock);
     }
 
     @ExpectPlatform
     public static Path configDir() {
-        throw new AssertionError();
+        return reflectionConfigDir();
+    }
+
+    private static Path reflectionConfigDir() {
+        // must be isolated to its own method or else transformer gets upset
+        try {
+            Class<?> fabric = Class.forName("net.fabricmcloader.api.FabricLoader");
+            return (Path)fabric.getMethod("getConfigDir").invoke(fabric.getMethod("getInstance").invoke(null));
+        } catch (ClassNotFoundException e) {
+            Class<?> fmlPaths;
+            try {
+                fmlPaths = Class.forName("net.neoforged.fml.loading.FMLPaths");
+            } catch (ClassNotFoundException _) {
+                try {
+                    fmlPaths = Class.forName("net.minecraftforge.fml.loading.FMLPaths");
+                } catch (ClassNotFoundException ex) {
+                    LOGGER.error("Something is very wrong!", ex);
+                    fmlPaths = null;
+                }
+            }
+            if (fmlPaths != null)
+                try {
+                    return (Path)fmlPaths.getMethod("get").invoke(fmlPaths.getField("CONFIGDIR").get(null));
+                } catch (ReflectiveOperationException ex) {
+                    LOGGER.error("Something is very wrong!", ex);
+                }
+        } catch (ReflectiveOperationException e) {
+            LOGGER.error("Something is very wrong!", e);
+        }
+        return Path.of("config");
     }
 }

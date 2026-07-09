@@ -1,5 +1,6 @@
 architectury {
     common enabled_platforms.split(",")
+//    injectInjectables = false
 }
 
 dependencies {
