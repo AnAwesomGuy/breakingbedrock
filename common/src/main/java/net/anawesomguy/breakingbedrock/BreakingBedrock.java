@@ -112,6 +112,7 @@ public final class BreakingBedrock {
     }
 
     // return null for no refmap
+    // old refmap (true) for <22w12a (2nd snapshot for 1.19), so true for <=1.18.2 is a safe bet
     @ExpectPlatform
     public static Boolean useOldRefmap() {
         throw new AssertionError();
