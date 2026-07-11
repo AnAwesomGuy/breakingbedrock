@@ -85,9 +85,9 @@ allprojects {
         options.compilerArgs += "-Xlint:-options"
     }
 
-    java.withSourcesJar()
+//    java.withSourcesJar()
 
-    [jar, sourcesJar]*.configure {
+    [jar/*, sourcesJar*/]*.configure {
         from 'LICENSE'
     }
 }
@@ -96,14 +96,14 @@ publishMods {
     changelog = project.changelog
     type = STABLE
     def fabricJar = project.provider { project(":fabric").remapJar }.flatMap { it.archiveFile }
-    def fabricSources = project.provider { project(":fabric").remapSourcesJar }.flatMap { it.archiveFile }
+//    def fabricSources = project.provider { project(":fabric").remapSourcesJar }.flatMap { it.archiveFile }
     def forgeJar = project.provider { project(":forge").remapJar }.flatMap { it.archiveFile }
     def neoJar = project.provider { project(":forge").neoforgeJar }.flatMap { it.archiveFile }
-    def forgeSources = project.provider { project(":forge").remapSourcesJar }.flatMap { it.archiveFile }
+//    def forgeSources = project.provider { project(":forge").remapSourcesJar }.flatMap { it.archiveFile }
 
     def fabric = publishOptions {
         file = fabricJar
-        additionalFiles.from fabricSources
+//        additionalFiles.from fabricSources
         version = project.version + "-fabric"
         displayName = "[Fabric 1.16-1.20.4] $display_name ${version.get()}"
         modLoaders.addAll "fabric", "quilt"
@@ -111,7 +111,7 @@ publishMods {
 
     def forge = publishOptions {
         file = forgeJar
-        additionalFiles.from forgeSources
+//        additionalFiles.from forgeSources
         version = project.version + "-forge"
         displayName = "[Forge 1.18.2-1.20.4] $display_name ${version.get()}"
         modLoaders.add "forge"
@@ -188,7 +188,8 @@ publishMods {
     }
 
     github {
-        additionalFiles.from fabricJar, forgeJar, neoJar, fabricSources, forgeSources
+        additionalFiles.from fabricJar, forgeJar, neoJar
+//        additionalFiles.from fabricSources, forgeSources
         accessToken = providers.environmentVariable('GITHUB_TOKEN')
         dryRun = !accessToken.present
         repository = github
