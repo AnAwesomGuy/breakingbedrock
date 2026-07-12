@@ -51,7 +51,15 @@ subprojects {
         archiveAppendix = project.name
     }
 
-    loom.mixin.useLegacyMixinAp = true
+    loom {
+        mixin.useLegacyMixinAp = true
+
+        runs {
+            configureEach {
+                systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
+            }
+        }
+    }
 
     tasks.withType(dev.architectury.plugin.TransformingTask).configureEach {
         // strange hack to remove the refmap addition behavior from the mixin json

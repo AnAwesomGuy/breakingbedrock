@@ -11,24 +11,6 @@ loom {
     forge {
         mixinConfig "${mod_id}.mixins.json"
     }
-
-    runs {
-        clientDebug {
-            client()
-            generateRunConfig = true
-            displayName = "Minecraft Client Debug"
-            sourceSet = sourceSets.main.name
-            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
-        }
-
-        serverDebug {
-            server()
-            generateRunConfig = true
-            displayName = "Minecraft Server Debug"
-            sourceSet = sourceSets.main.name
-            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
-        }
-    }
 }
 
 configurations {
