@@ -15,20 +15,18 @@ loom {
     runs {
         clientDebug {
             client()
-            ideConfigGenerated true
-            name = "Minecraft Client Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
+            generateRunConfig = true
+            displayName = "Minecraft Client Debug"
+            sourceSet = sourceSets.main.name
+            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
         }
 
         serverDebug {
             server()
-            ideConfigGenerated true
-            name = "Minecraft Server Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
+            generateRunConfig = true
+            displayName = "Minecraft Server Debug"
+            sourceSet = sourceSets.main.name
+            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
         }
     }
 }
@@ -94,7 +92,7 @@ remapJar {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 17
+    options.release = 17 // we only support 1.18+ (which uses Java 17) on forge
 }
 
 //sourcesJar {

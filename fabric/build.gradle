@@ -11,20 +11,18 @@ loom {
     runs {
         clientDebug {
             client()
-            ideConfigGenerated true
-            name = "Minecraft Client Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
+            generateRunConfig = true
+            displayName = "Minecraft Client Debug"
+            sourceSet = sourceSets.main.name
+            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
         }
 
         serverDebug {
             server()
-            ideConfigGenerated true
-            name = "Minecraft Server Debug"
-            source sourceSets.main
-            property 'mixin.debug', 'true'
-            property "fabric.log.level", "debug"
+            generateRunConfig = true
+            displayName = "Minecraft Server Debug"
+            sourceSet = sourceSets.main.name
+            systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
         }
     }
 }
