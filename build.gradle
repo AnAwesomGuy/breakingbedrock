@@ -11,9 +11,9 @@ architectury.minecraft = minecraft_version
 
 Map<String, String> modProperties() {
     [
-            version    : mod_version, mod_id: mod_id, description: project.properties.description,
-            github_repo: 'http://github.com/' + github, display_name: display_name,
-            modrinth_id: modrinth_id, curseforge_id: curseforge_id,
+            version    : mod_version, mod_id: mod_id,   description  : project.properties.description,
+            github_repo: 'http://github.com/' + github, display_name : display_name,
+            modrinth_id: modrinth_id,                   curseforge_id: curseforge_id,
     ]
 }
 
@@ -48,8 +48,7 @@ subprojects {
     loom {
         runs {
             configureEach {
-                property 'mixin.debug', 'true'
-                property 'fabric.log.level', 'debug'
+                systemProperties.putAll(['mixin.debug': 'true', 'fabric.log.level': 'debug'])
             }
         }
     }
