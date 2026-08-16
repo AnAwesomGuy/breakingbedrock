@@ -97,14 +97,18 @@ public final class BreakingBedrock {
     private static Path reflectionConfigDir() {
         // must be isolated to its own method or else transformer gets upset
         try {
-            Class<?> fabric = Class.forName("net.fabricmcloader.api.FabricLoader");
+            // try to get config dir from fabric
+            Class<?> fabric = Class.forName("net.fabricmc.loader.api.FabricLoader");
             return (Path)fabric.getMethod("getConfigDir").invoke(fabric.getMethod("getInstance").invoke(null));
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException _) {
+            // not using fabric, check (neo)forge
             Class<?> fmlPaths;
             try {
+                // check neoforge
                 fmlPaths = Class.forName("net.neoforged.fml.loading.FMLPaths");
             } catch (ClassNotFoundException _) {
                 try {
+                    // check lex forge
                     fmlPaths = Class.forName("net.minecraftforge.fml.loading.FMLPaths");
                 } catch (ClassNotFoundException ex) {
                     LOGGER.error("Something is very wrong!", ex);
@@ -114,12 +118,12 @@ public final class BreakingBedrock {
             if (fmlPaths != null)
                 try {
                     return (Path)fmlPaths.getMethod("get").invoke(fmlPaths.getField("CONFIGDIR").get(null));
-                } catch (ReflectiveOperationException ex) {
-                    LOGGER.error("Something is very wrong!", ex);
+                } catch (ReflectiveOperationException e) {
+                    LOGGER.error("Something is very wrong!", e);
                 }
         } catch (ReflectiveOperationException e) {
             LOGGER.error("Something is very wrong!", e);
         }
-        return Path.of("config");
+        return Path.of("config"); // fallback that should work usually
     }
 }

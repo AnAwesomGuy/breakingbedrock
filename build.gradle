@@ -145,7 +145,7 @@ publishMods {
     def universalJar = project.provider { rootProject.shadowJar }.flatMap { it.archiveFile }
 
     file = universalJar
-//        additionalFiles.from fabricJar, neoforgeJar
+//    additionalFiles.from fabricJar, neoforgeJar
     version = project.version
     displayName = "[All Loaders 26.x] $display_name $project.version"
     modLoaders.addAll "fabric", "neoforge", "forge"
