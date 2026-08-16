@@ -1,10 +1,11 @@
 package net.anawesomguy.breakingbedrock;
 
-import net.minecraft.references.BlockItemId;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.asm.service.MixinService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,20 +28,20 @@ public final class BreakingBedrockMixinPlugin implements IMixinConfigPlugin {
             }
             case "net.anawesomguy.breakingbedrock.mixin.BlocksMixin_ReplaceBedrock_NEW_26_2" -> {
                 try {
-                    @SuppressWarnings("unused")
-                    Class<?> c = BlockItemId.class;
+                    // huge thanks to @SuperMartijn642 for this tip
+                    MixinService.getService().getBytecodeProvider().getClassNode("net.minecraft.references.BlockItemId");
                     BreakingBedrock.LOGGER.debug("Loading mixin for 26.2-snapshot-3 and above");
                     yield true; // BlockItemId exists, use new mixin
-                } catch (NoClassDefFoundError e) {
+                } catch (ClassNotFoundException | IOException e) {
                     yield false; // BlockItemId doesn't exist, don't use new mixin
                 }
             }
             case "net.anawesomguy.breakingbedrock.mixin.BlocksMixin_ReplaceBedrock_OLD" -> {
                 try {
-                    @SuppressWarnings("unused")
-                    Class<?> c = BlockItemId.class;
+                    // huge thanks to @SuperMartijn642 for this tip
+                    MixinService.getService().getBytecodeProvider().getClassNode("net.minecraft.references.BlockItemId");
                     yield false; // BlockItemId exists, don't use old mixin
-                } catch (NoClassDefFoundError e) {
+                } catch (ClassNotFoundException | IOException e) {
                     BreakingBedrock.LOGGER.debug("Loading mixin for older 26.1.x versions");
                     yield true; // BlockItemId doesn't exist, use old mixin
                 }
